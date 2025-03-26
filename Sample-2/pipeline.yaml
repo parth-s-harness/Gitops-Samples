@@ -1,0 +1,112 @@
+pipeline:
+  projectIdentifier: Krishika_CD_Samples
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Deploy
+        identifier: Stage1
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          gitOpsEnabled: true
+          service:
+            serviceRef: Service_Gitops
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          execution:
+            steps:
+              - step:
+                  type: GitOpsUpdateReleaseRepo
+                  name: Update Release Repo
+                  identifier: updateReleaseRepo
+                  timeout: 10m
+                  spec:
+                    variables:
+                      - name: replicaCount
+                        type: String
+                        value: "2"
+                    prTitle: Update values.yaml
+              - step:
+                  type: HarnessApproval
+                  name: Approval_before_merging_pr
+                  identifier: HarnessApproval_1
+                  spec:
+                    approvalMessage: Please review the following information and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    isAutoRejectEnabled: false
+                    approvers:
+                      userGroups:
+                        - callback_test_user
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                    approverInputs: []
+                  timeout: 1d
+              - step:
+                  type: MergePR
+                  name: Merge PR
+                  identifier: mergePR
+                  spec:
+                    deleteSourceBranch: true
+                    variables: []
+                  timeout: 10m
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: PipelineRollback
+              - step:
+                  type: GitOpsSync
+                  name: GitOpsSync_Application
+                  identifier: GitOpsSync_Application
+                  spec:
+                    prune: false
+                    dryRun: false
+                    applyOnly: false
+                    forceApply: false
+                    applicationsList:
+                      - applicationName: gitops-sample-application
+                        agentId: gitopspragent
+                    retryStrategy: {}
+                    retry: false
+                    syncOptions:
+                      skipSchemaValidation: false
+                      autoCreateNamespace: false
+                      pruneResourcesAtLast: false
+                      applyOutOfSyncOnly: false
+                      replaceResources: false
+                      prunePropagationPolicy: foreground
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  type: RevertPR
+                  name: RevertPR_1
+                  identifier: RevertPR_1
+                  spec:
+                    commitId: <+manifests.manifest_details.store.commitId>
+                  timeout: 10m
+          environment:
+            environmentRef: Gitops_PR_Env
+            deployToAll: false
+            gitOpsClusters:
+              - identifier: incluster
+                agentIdentifier: gitopspragent
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        gitOpsEnabled: true
+  identifier: Gitops_PR_Sample2
+  name: Gitops PR Sample-2
+  notificationRules: []

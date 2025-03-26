@@ -1,6 +1,6 @@
 ## Overview
 
-This pipeline sample fetches application details and syncs the selected application using the Harness GitOps Pipeline.
+This pipeline sample creates a PR pipeline that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes and then send notification to users regarding Update of the Release Repo.
 
 ## Prerequisites
 
@@ -62,7 +62,7 @@ Checkout the [Interactive Guide](https://app.tango.us/app/embed/18d662e4-5c08-4d
   - Under **Manifest**, click on **+ Add Release Repo Manifest**.  
     - Select **Release Repo Store** as **GitHub**.  
     - Provide the GitHub Connector to authenticate with the repo containing your release repo manifest. Learn more about creating a [GitHub Connector](https://developer.harness.io/docs/platform/connectors/code-repositories/ref-source-repo-provider/git-hub-connector-settings-reference/). For this sample, we are using the same [GitOps Sample](https://github.com/harness-community/Gitops-Samples) repo.  
-    - In **Manifest Details**, provide **Manifest Name**, set **Git Fetch Type** as **Latest from Branch**, select Branch **main**, and specify File Path as **gitops-sample-app/charts/Python-App/Chart.yaml**.  
+    - In **Manifest Details**, provide **Manifest Name**, set **Git Fetch Type** as **Latest from Branch**, select Branch **main**, and specify File Path as **gitops-sample-app/charts/Python-App/values.yaml**.  
   - Under **Artifacts**, click on **+ Add Artifact Source**.  
     - Select **Docker Registry** under **Specify Artifact Repository Type** and choose **Docker Registry Connector**. Learn more about creating a [Docker Connector](https://developer.harness.io/docs/platform/connectors/cloud-providers/ref-cloud-providers/docker-registry-connector-settings-reference) in Harness.  
     - Under **Artifact Details**, provide **Artifact Source Identifier**, enter the **Image Path** (for this sample, we are using a public image **krishi0408/python-helm-native-canary-blue**), specify a tag (for this sample, we use **9**), and click **Submit**.  
@@ -82,34 +82,9 @@ Checkout the [Interactive Guide](https://app.tango.us/app/embed/18d662e4-5c08-4d
 
 Learn more about creating a [GitOps Application](https://developer.harness.io/docs/continuous-delivery/gitops/get-started/harness-git-ops-basics#application) in Harness.
 
-## Syncing Your Application  
+## Creating a PR Pipeline
 
-#### Option 1: Manual Sync  
-
-1. Under **GitOps**, go to **Applications** and select the GitOps application created in Step 4.  
-2. Click **Sync**.  
-   ![](/static/gitopps-sync-app.png)  
-3. Under **Synchronize Resources**, select all resources for service, deployment, and ingress.  
-   ![](/static/gitops-sync-app-1.png)  
-4. Click **Synchronize**.  
-
-You can view **Recent Deployment Activities** under the Deployment Tab.  
-![](/static/gitops-deployment-view.png)  
-
-Under **Resource View**, you can see the hierarchical structure of the GitOps-managed application.  
-![](/static/gitopps-sync-app.png)  
-
-Under **Sync Status**, you can view the sync status of all resources.  
-![](/static/sync-status.png)  
-
-If your sync status fails, view the error under **Sync Status**, make changes to your resource file, and sync again.  
-![](/static/gitops-sync-fail.png)  
-
-Learn more about [Syncing GitOps applications](https://developer.harness.io/docs/continuous-delivery/gitops/use-gitops/sync-gitops-applications) in Harness.
-
-#### Option 2: Using a Harness Pipeline  
-
-Checkout the [Interactive Guide](https://app.tango.us/app/embed/90e3760e-9e4e-46ad-b301-864012ffb5ce) to create a Harness Pipeline to fetch Gitops App details and sync Gitops App for this sample.
+Checkout the [Interactive Guide](https://app.tango.us/app/embed/91bc8d1d-64fb-4523-b218-b86297deae85) to create a GitOps PR Pipeline for this sample.
 
 - Under **Pipelines**, click on **+ Create a Pipeline**, give a name to your pipeline, and under **How do you want to set up your Pipeline?**, select **Inline** if you want to store your pipeline in Harness or **Remote** if you want to store your pipeline in a Git repository.  
 
@@ -123,24 +98,51 @@ For the cluster to be populated under **Specify GitOps Cluster**, navigate to th
 
 ![](/static/env_gitops_cluster.png)  
 
-- Under **Execution**, since we are only fetching app details and syncing your GitOps application, remove the first three steps: **Update Release Repo**, **Merge PR**, and **Fetch Linked Apps**.  
-- Click on **Add Step**, select **GitOps Get App Details**, provide a step name, then select **Application Name** and choose the **GitOps Application** you created in Step 4. Click **Apply Changes**.  
-Learn more about [GitOps Sync Step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-sync-step) in Harness.
+- Under **Execution**, we have steps as **Update Release Repo**, **Merge PR**, and **Fetch Linked Apps**.  
+  1. Click on **Update Release Repo**, this step fetches JSON or YAML files, updates them with your changes, performs a commit and push, and then creates the PR.
+   - Provide name for your step **Update Release Repo**.
+   - Under **Optional Configuration**, Provide **PR Title (optional)** that will be the PR title for the PR that will be created for changes done in the `values.yaml` file.
+   - Under **Variables (optional)**, we will update the `replicaCount` in Values YAML to `3` from `1`.
+   - Click on **Apply Changes**.
+   Learn more about [Update Release Repo](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#update-release-repo-step) in PR pipeline in Harness.
 
-- Click on **Add Step**, select **GitOps Sync**, provide a step name, and under **Advanced Configuration**, provide **Application Name** and choose the **GitOps Application** you created in Step 4. Click **Apply Changes**.  
-Learn more about [Get App Details step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-get-app-details-step) in Harness.
+  2. Now, we will add an Approval Step before **Merge PR** step to ask for approval before merging the PR in the main branch. 
+    - Click on **Add Step**, select **Harness Approvals**, provide a step name, then under **User Group** select the User Group of users you want approval from. Click on **Apply Changes**.  
+  3. Click on **Merge PR**, This step merges the new PR created by the preceding Update Release Repo step.
+    - Provide name for your step **Update Release Repo**.
+    - Click on **Apply Changes**.
+    Learn more about [Merge PR step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#merge-pr-step) in PR pipeline in Harness.
+
+  4. Click on **Add Step**, select **GitOps Sync**, provide a step name, and under **Advanced Configuration**, provide **Application Name** and choose the **GitOps Application** you created in Step 4. Click **Apply Changes**, this step will sync the GitOps application with the merged changes.
+  Learn more about [GitOps Sync step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-sync-step) in PR pipeline in Harness.
 
 - Click **Save** and **Run** the pipeline.  
 
-You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-1/pipeline.yaml).  
+You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-2/pipeline.yaml).  
 
-In the execution logs for the **GitOps Get App Details** step, you can see the details of the GitOps application.  
-![](/static/gitops-fetch-app.png)  
+In the execution logs for the **Update Release Repo** step, you can see the details of the GitOps application and inside the step under **Update GitOps Configuration files**, we can see that `replicaCount` is getting updated to `3` and under **Create PR** we can see that a PR is created.
+![](/static/Update%20release%20repo.png)
 
-In the execution logs for the **GitOps Sync** step, you can see the sync details of the GitOps application.  
-![](/static/gitops-sync-step.png)  
 
-You have successfully fetched and synced your first GitOps Application! 🚀
+In the execution logs for the **Approval_before_merging_pr** step, you can **Approve or Reject** the step before merging the PR. 
+![](/static/approval_step.png)
+
+Once, you approve the PR **Merge PR** step will start. In the execution logs you can see that the PR created in **Update Release Repo** step is merged into main branch. 
+![](/static/merge_pr.png)
+
+Please note that, for merging the PR, you need to ensure that the token used for authentication in your Git repository has the necessary permissions to merge the PR.
+
+Once the PR is merged, the **GitOpsSync_Application** step will be triggered, updating the replica count from 2 to 1. GitOps will then synchronize the changes accordingly.
+![](/static/Gitops_sync_app_step.png)
+
+You can either select the **URL** from the execution logs, which will redirect you to the GitOps Application, and then you can check the **Sync Status** and **Resource View** of your GitOps Application or manually navigate to Gitops Application Page and select your Gitops Application to check the Sync Status and logs.
+
+Click on the Deployment resource kind, then navigate to the Events tab, where you can see that the ReplicaSet has been scaled down from 3 to 2.
+![](/static/gitops_dep_resource.png)
+
+Learn more about creating [PR Pipeline](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/) in Harness.
+
+You have successfully updated `values.yaml`, obtained approval, merged the PR, synced your GitOps application! 🚀
 
 ## Resources
 
@@ -149,5 +151,7 @@ You have successfully fetched and synced your first GitOps Application! 🚀
 3. [GitOps Agent](https://developer.harness.io/docs/continuous-delivery/gitops/connect-and-manage/install-a-harness-git-ops-agent/) 
 4. [GitOps Repository](https://developer.harness.io/docs/continuous-delivery/gitops/get-started/harness-git-ops-basics#repository)
 5. [GitOps Application](https://developer.harness.io/docs/continuous-delivery/gitops/get-started/harness-git-ops-basics#application)
-6. [GitOps Sync Step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-sync-step)
-7. [Get App Details step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-get-app-details-step)
+6. [Update Release Repo](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#update-release-repo-step)
+7. [Merge PR step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#merge-pr-step)
+8. [GitOps Sync Step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-sync-step)
+9. [PR Pipeline in Harness](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/) 
