@@ -32,7 +32,7 @@ pipeline:
                     variables:
                       - name: replicaCount
                         type: String
-                        value: "2"
+                        value: <+input>
                     prTitle: Update values.yaml
               - step:
                   type: HarnessApproval
@@ -85,14 +85,7 @@ pipeline:
                       replaceResources: false
                       prunePropagationPolicy: foreground
                   timeout: 10m
-            rollbackSteps:
-              - step:
-                  type: RevertPR
-                  name: RevertPR_1
-                  identifier: RevertPR_1
-                  spec:
-                    commitId: <+manifests.manifest_details.store.commitId>
-                  timeout: 10m
+            rollbackSteps: []
           environment:
             environmentRef: Gitops_PR_Env
             deployToAll: false

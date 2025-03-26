@@ -1,6 +1,6 @@
 ## Overview
 
-This pipeline sample creates a PR pipeline that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes and then send notification to users regarding Update of the Release Repo.
+This pipeline sample creates a PR pipeline that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes and then sync the Gitops App.
 
 ## Prerequisites
 
