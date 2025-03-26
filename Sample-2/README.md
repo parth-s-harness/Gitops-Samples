@@ -1,6 +1,6 @@
 ## Overview
 
-This pipeline sample creates a PR pipeline that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes and then sync the Gitops App.
+This pipeline sample creates a PR pipeline that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes and then sync the GitOps application.
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Learn more about creating a [GitOps Cluster](https://developer.harness.io/docs/c
 
 A Harness GitOps Repository is a repo containing the declarative description of a desired state. The declarative description can be in Kubernetes manifests, Helm Charts, Kustomize manifests, etc.
 
-Checkout the [Interactive Guide](https://app.tango.us/app/embed/589df13a-b1d7-4538-aef3-fcea4f179add) to create Gitops Repository for this sample.
+Check out the [Interactive Guide](https://app.tango.us/app/embed/589df13a-b1d7-4538-aef3-fcea4f179add) to create Gitops Repository for this sample.
 
 - Fork and clone this [Git repository](https://github.com/harness-community/Gitops-Samples).
 - Navigate to **GitOps: Settings**  
@@ -46,7 +46,7 @@ GitOps Applications manage GitOps operations for a given desired state and its l
 
 A GitOps Application collects the Repository (what you want to deploy), Cluster (where you want to deploy), and Agent (how you want to deploy). You define these entities and then select them when setting up your Application.
 
-Checkout the [Interactive Guide](https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e) to create Gitops Application for this sample.
+Check out the [Interactive Guide](https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e) to create Gitops Application for this sample.
 
 - Navigate to **Applications**  
   ![](/static/Gitops-application.png)
@@ -84,7 +84,7 @@ Learn more about creating a [GitOps Application](https://developer.harness.io/do
 
 ## Creating a PR Pipeline
 
-Checkout the [Interactive Guide](https://app.tango.us/app/embed/91bc8d1d-64fb-4523-b218-b86297deae85) to create a GitOps PR Pipeline for this sample.
+Check out the [Interactive Guide](https://app.tango.us/app/embed/91bc8d1d-64fb-4523-b218-b86297deae85) to create a GitOps PR Pipeline for this sample.
 
 - Under **Pipelines**, click on **+ Create a Pipeline**, give a name to your pipeline, and under **How do you want to set up your Pipeline?**, select **Inline** if you want to store your pipeline in Harness or **Remote** if you want to store your pipeline in a Git repository.  
 
@@ -99,7 +99,7 @@ For the cluster to be populated under **Specify GitOps Cluster**, navigate to th
 ![](/static/env_gitops_cluster.png)  
 
 - Under **Execution**, we have steps as **Update Release Repo**, **Merge PR**, and **Fetch Linked Apps**.  
-  1. Click on **Update Release Repo**, this step fetches JSON or YAML files, updates them with your changes, performs a commit and push, and then creates the PR.
+  1. Click on **Update Release Repo**. This step fetches JSON or YAML files, updates them with your changes, performs a commit and push, and then creates the PR.
    - Provide name for your step **Update Release Repo**.
    - Under **Optional Configuration**, Provide **PR Title (optional)** that will be the PR title for the PR that will be created for changes done in the `values.yaml` file.
    - Under **Variables (optional)**, we will update the `replicaCount` in Values YAML to `3` from `1`.
@@ -127,17 +127,17 @@ In the execution logs for the **Update Release Repo** step, you can see the deta
 In the execution logs for the **Approval_before_merging_pr** step, you can **Approve or Reject** the step before merging the PR. 
 ![](/static/approval_step.png)
 
-Once, you approve the PR **Merge PR** step will start. In the execution logs you can see that the PR created in **Update Release Repo** step is merged into main branch. 
+Once you approve the PR **Merge PR** step will start. In the execution logs you can see that the PR created in **Update Release Repo** step is merged into main branch. 
 ![](/static/merge_pr.png)
 
 Please note that, for merging the PR, you need to ensure that the token used for authentication in your Git repository has the necessary permissions to merge the PR.
 
-Once the PR is merged, the **GitOpsSync_Application** step will be triggered, updating the replica count from 2 to 1. GitOps will then synchronize the changes accordingly.
+Once the PR is merged, the **GitOpsSync_Application** Once the PR is merged, the **GitOpsSync_Application** step will be triggered, updating the replica count from 3 to 1.
 ![](/static/Gitops_sync_app_step.png)
 
-You can either select the **URL** from the execution logs, which will redirect you to the GitOps Application, and then you can check the **Sync Status** and **Resource View** of your GitOps Application or manually navigate to Gitops Application Page and select your Gitops Application to check the Sync Status and logs.
+You can either select the **URL** from the execution logs, which will redirect you to the GitOps Application, and then you can check the **Sync Status** and **Resource View** of your GitOps Application or manually navigate to Gitops Application Page and select your GitOps Application to check the Sync Status and logs.
 
-Click on the Deployment resource kind, then navigate to the Events tab, where you can see that the ReplicaSet has been scaled down from 3 to 2.
+Click on the Deployment resource kind, then navigate to the Events tab, where you can see that the ReplicaSet has been scaled down from 3 to 1.
 ![](/static/gitops_dep_resource.png)
 
 Learn more about creating [PR Pipeline](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/) in Harness.
