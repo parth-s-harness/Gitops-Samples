@@ -24,21 +24,7 @@ Learn more about creating a [GitOps Cluster](https://developer.harness.io/docs/c
 
 A Harness GitOps Repository is a repo containing the declarative description of a desired state. The declarative description can be in Kubernetes manifests, Helm Charts, Kustomize manifests, etc.
 
-Checkout the Interactive Guide to create Gitops Repository for this sample:
-
-<iframe
-    src="https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e"
-    title="Add a run step against a registered artifact in your CI pipeline."
-    style={{ minHeight: '640px' }}
-    width="100%"
-    height="100%"
-    referrerpolicy="strict-origin-when-cross-origin"
-    frameborder="0"
-    webkitallowfullscreen="true"
-    mozallowfullscreen="true"
-    allowfullscreen="true">
-</iframe>
-
+Checkout the [Interactive Guide](https://app.tango.us/app/embed/589df13a-b1d7-4538-aef3-fcea4f179add) to create Gitops Repository for this sample.
 
 - Fork and clone this [Git repository](https://github.com/harness-community/Gitops-Samples).
 - Navigate to **GitOps: Settings**  
@@ -60,20 +46,7 @@ GitOps Applications manage GitOps operations for a given desired state and its l
 
 A GitOps Application collects the Repository (what you want to deploy), Cluster (where you want to deploy), and Agent (how you want to deploy). You define these entities and then select them when setting up your Application.
 
-Checkout the Interactive Guide to create Gitops Application for this sample:
-
-<iframe
-    src="https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e"
-    title="Add a run step against a registered artifact in your CI pipeline."
-    style={{ minHeight: '640px' }}
-    width="100%"
-    height="100%"
-    referrerpolicy="strict-origin-when-cross-origin"
-    frameborder="0"
-    webkitallowfullscreen="true"
-    mozallowfullscreen="true"
-    allowfullscreen="true">
-</iframe>
+Checkout the [Interactive Guide](https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e) to create Gitops Application for this sample.
 
 - Navigate to **Applications**  
   ![](./static/Gitops-application.png)
@@ -134,37 +107,31 @@ If your sync status fails, view the error under **Sync Status**, make changes to
 
 #### Option 2: Using a Harness Pipeline  
 
-Checkout the Interactive Guide to Sync Gitops Application using a Harness Pipeline for this sample:
+Checkout the [Interactive Guide](https://app.tango.us/app/embed/90e3760e-9e4e-46ad-b301-864012ffb5ce) to create a GitOps Application for this sample.
 
-<iframe
-    src="https://app.tango.us/app/embed/18d662e4-5c08-4d63-95a5-20ebac87b42e"
-    title="Add a run step against a registered artifact in your CI pipeline."
-    style={{ minHeight: '640px' }}
-    width="100%"
-    height="100%"
-    referrerpolicy="strict-origin-when-cross-origin"
-    frameborder="0"
-    webkitallowfullscreen="true"
-    mozallowfullscreen="true"
-    allowfullscreen="true">
-</iframe>
+- Under **Pipelines**, click on **+ Create a Pipeline**, give a name to your pipeline, and under **How do you want to set up your Pipeline?**, select **Inline** if you want to store your pipeline in Harness or **Remote** if you want to store your pipeline in a Git repository.  
 
-1. Under **Pipelines**, click **+ Create a Pipeline**, enter a name, and select **Inline** or **Remote** storage.  
-2. Click **Add Stage**, select **Deploy**, and configure:  
-   - **Deployment Type**: Kubernetes  
-   - **GitOps Service**: Select the service created in Step 4.  
-   - **Environment**: Select the environment created in Step 4.  
-3. Under **Execution**, remove unnecessary steps and add:  
-   - **GitOps Get App Details** step.  
-   - **GitOps Sync** step.  
-4. Click **Save** and **Run**.  
+- Click on **Add Stage**, select **Stage Type** as **Deploy**.  
+- Provide a **Stage Name**, select **Deployment Type** as **Kubernetes**, and select **GitOps**.  
+- Under **Service**, select the service you created as part of your **GitOps Application** in Step 4.  
+- Under **Environment**, select the environment you created as part of your **GitOps Application** in Step 4.  
+- Under **Specify GitOps Cluster**, select the GitOps cluster from the same GitOps agent as your AppSet that manages your pipeline, which you created in Step 2.  
 
-You can also view the whole pipeline yaml for Fetching App Details and Syncing Gitops App [here](/Sample-1/pipeline.yaml).
+For the cluster to be populated under **Specify GitOps Cluster**, navigate to the environment you created in Step 4 (during the creation of the GitOps Application), go to the **GitOps Cluster** tab, click on **+ Select Cluster(s)**, and select the GitOps cluster from the same GitOps agent as your AppSet that manages your pipeline, which you created in Step 2.  
 
-In the Execution, in console logs for step getting Gitops Get App Details you can see the details of the gitops application. 
-![](./static/gitops-fetch-app.png)
+![](./static/env_gitops_cluster.png)  
 
-In the Execution, in console logs for step Syncing Gitops App Details you can see the details of the gitops application. 
-![](./static/gitops-sync-step.png)
+- Under **Execution**, since we are only fetching app details and syncing your GitOps application, remove the first three steps: **Update Release Repo**, **Merge PR**, and **Fetch Linked Apps**.  
+- Click on **Add Step**, select **GitOps Get App Details**, provide a step name, then select **Application Name** and choose the **GitOps Application** you created in Step 4. Click **Apply Changes**.  
+- Click on **Add Step**, select **GitOps Sync**, provide a step name, and under **Advanced Configuration**, provide **Application Name** and choose the **GitOps Application** you created in Step 4. Click **Apply Changes**.  
+- Click **Save** and **Run** the pipeline.  
 
-You have successfully fetched your first GitOps Application! 🚀
+You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-1/pipeline.yaml).  
+
+In the execution logs for the **GitOps Get App Details** step, you can see the details of the GitOps application.  
+![](./static/gitops-fetch-app.png)  
+
+In the execution logs for the **GitOps Sync** step, you can see the sync details of the GitOps application.  
+![](./static/gitops-sync-step.png)  
+
+You have successfully fetched and synced your first GitOps Application! 🚀
