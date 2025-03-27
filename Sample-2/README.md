@@ -142,6 +142,8 @@ Click on the Deployment resource kind, then navigate to the Events tab, where yo
 
 Learn more about creating [PR Pipeline](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/) in Harness.
 
+You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-2/pipeline.yaml).  
+
 You have successfully updated `values.yaml`, obtained approval, merged the PR, synced your GitOps application! 🚀
 
 ## Resources
