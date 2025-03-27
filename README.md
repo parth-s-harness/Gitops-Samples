@@ -6,7 +6,7 @@ This repository contains various **GitOps Sample Pipelines** using **Harness Git
 
 Below are the different GitOps workflows covered in this repository:
 
-### 1️⃣ [Fetching App Details and Syncing App using Harness Pipeline](https://github.com/harness-community/Gitops-Samples/tree/gitops-1/Sample-1)  
+### 1️⃣ [Fetching App Details and Syncing App using Harness Pipeline](https://github.com/harness-community/Gitops-Samples/tree/gitops-1/Fetch-App-Sync)  
 Learn how to create a **Harness GitOps pipeline** that fetches application details and syncs it with the desired state defined in Git. 
 This sample covers:  
 ✔ Setting up a **GitOps pipeline** in Harness  
@@ -15,7 +15,7 @@ This sample covers:
 
 ---
 
-### 2️⃣ [PR Pipeline: Update Values, Approve, Merge & Sync GitOps App](https://github.com/harness-community/Gitops-Samples/tree/main/Sample-2)  
+### 2️⃣ [PR Pipeline: Update Values, Approve, Merge & Sync GitOps App](https://github.com/harness-community/Gitops-Samples/tree/main/PR-Pipeline)  
 This sample demonstrates a **PR-based GitOps pipeline**, where application updates go through a **Pull Request (PR) workflow** before being deployed. 
 Key highlights:  
 ✔ Updating `values.yaml` in a GitOps repository  
@@ -25,7 +25,7 @@ Key highlights:
 
 ---
 
-### 3️⃣ [GitOps PR Pipeline with Failure Strategy](https://github.com/harness-community/Gitops-Samples/tree/main/Sample-3)  
+### 3️⃣ [GitOps PR Pipeline with Failure Strategy](https://github.com/harness-community/Gitops-Samples/tree/main/Failure-Strategy-PR-Pipeline)  
 This sample builds on the PR pipeline by adding a **Failure Strategy** to ensure the application remains in a **healthy state** in case of sync failures.  
 ✔ If **GitOps sync fails**, the pipeline will **revert the merged PR**  
 ✔ This restores the application to a **previous healthy state**  
@@ -33,7 +33,7 @@ This sample builds on the PR pipeline by adding a **Failure Strategy** to ensure
 
 ---
 
-### 4️⃣ [Adding Notifications to the GitOps PR Pipeline](https://github.com/harness-community/Gitops-Samples/tree/main/Sample-4)  
+### 4️⃣ [Adding Notifications to the GitOps PR Pipeline](https://github.com/harness-community/Gitops-Samples/tree/main/Notifications-PR-Pipeline)  
 This sample focuses on **adding notifications** to a GitOps PR pipeline. It ensures that users are informed when a pipeline completes successfully.  
 ✔ Configuring **email notifications**  
 ✔ Selecting **pipeline events** to trigger notifications  
