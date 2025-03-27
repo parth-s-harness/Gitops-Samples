@@ -38,6 +38,8 @@ Learn more about the [GitOps Sync step](https://developer.harness.io/docs/contin
 
 You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-3/pipeline.yaml).
 
+You have successfully added a failure strategy to ensure your GitOps application stays in a healthy state, even if a sync fails! 🚀
+
 ## Resources
 
 1. [Harness Gitops Basic](https://developer.harness.io/docs/continuous-delivery/gitops/get-started/harness-git-ops-basics)
