@@ -1,18 +1,18 @@
 ## Overview
 
-Now that we have created a [PR pipeline](/Sample-2/README.md) that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes, let's add a Failure Strategy. If the application sync fails, we will revert the merged PR to restore the GitOps application to a healthy state and then re-sync it to ensure it remains in a healthy state after the rollback.
+Now that we have created a [PR pipeline](/PR-Pipeline/README.md) that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes, let's add a Failure Strategy. If the application sync fails, we will revert the merged PR to restore the GitOps application to a healthy state and then re-sync it to ensure it remains in a healthy state after the rollback.
 
 ## Prerequisites
 
-Make sure you have all the [prerequisites](/Sample-2/README.md#prerequisites) before adding a failure strategy to the GitOps PR Pipeline.
+Make sure you have all the [prerequisites](/PR-Pipeline/README.md#prerequisites) before adding a failure strategy to the GitOps PR Pipeline.
 
 ## GitOps PR Pipeline  
 
-Follow this guide to [create a GitOps PR Pipeline](/Sample-2/README.md#creating-a-pr-pipeline) before adding a failure strategy.
+Follow this guide to [create a GitOps PR Pipeline](/PR-Pipeline/README.md#creating-a-pr-pipeline) before adding a failure strategy.
 
 ## Adding a Failure Strategy to the GitOps Pipeline  
 
-Once you have a [PR pipeline](/Sample-2/README.md#creating-a-pr-pipeline) ready, let's add a failure strategy in the **GitOps Sync** step.
+Once you have a [PR pipeline](/PR-Pipeline/README.md#creating-a-pr-pipeline) ready, let's add a failure strategy in the **GitOps Sync** step.
 
 1. Under **GitOps Sync**, go to **Advanced**, add a **Failure Strategy**, click on **All Errors**, and under **Perform Action**, select **Rollback Stage**.  
    ![](/static/rollback_stage.png)  
@@ -36,7 +36,7 @@ This step will re-sync the GitOps application to its last known healthy state.
 
 Learn more about the [GitOps Sync step](https://developer.harness.io/docs/continuous-delivery/gitops/pr-pipelines/gitops-pipeline-steps#gitops-sync-step) in a PR pipeline in Harness.
 
-You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-3/pipeline.yaml).
+You can also view the complete pipeline YAML for above sample [here](/Failure-Strategy-PR-Pipeline/pipeline.yaml).
 
 You have successfully added a failure strategy to ensure your GitOps application stays in a healthy state, even if a sync fails! 🚀
 

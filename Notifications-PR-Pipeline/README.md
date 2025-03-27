@@ -2,19 +2,19 @@
 
 ## Overview  
 
-Now that we have created a [PR pipeline](/Sample-2/README.md) that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes, let's add a notification mechanism. This will send an email notification when the pipeline completes successfully.  
+Now that we have created a [PR pipeline](/PR-Pipeline/README.md) that updates `values.yaml`, obtains approval before merging the PR, and then syncs the GitOps application with the merged changes, let's add a notification mechanism. This will send an email notification when the pipeline completes successfully.  
 
 ## Prerequisites  
 
-Ensure you have all the [prerequisites](/Sample-2/README.md#prerequisites) before adding a notification mechanism to the GitOps PR Pipeline.  
+Ensure you have all the [prerequisites](/PR-Pipeline/README.md#prerequisites) before adding a notification mechanism to the GitOps PR Pipeline.  
 
 ## GitOps PR Pipeline  
 
-Follow this guide to [create the GitOps PR Pipeline](/Sample-2/README.md#creating-a-pr-pipeline) before adding notifications.  
+Follow this guide to [create the GitOps PR Pipeline](/PR-Pipeline/README.md#creating-a-pr-pipeline) before adding notifications.  
 
 ## Adding Notification to the GitOps Pipeline  
 
-Once you have the [PR pipeline](/Sample-2/README.md#creating-a-pr-pipeline) ready, let's add a notification rule.  
+Once you have the [PR pipeline](/PR-Pipeline/README.md#creating-a-pr-pipeline) ready, let's add a notification rule.  
 
 1. In the **Pipeline Studio**, click on **Notify** and then click on **+ Notifications**.  
    ![](/static/add_notification.png)  
@@ -35,7 +35,7 @@ Once you have the [PR pipeline](/Sample-2/README.md#creating-a-pr-pipeline) read
 
 Learn more about [Notifications](https://developer.harness.io/docs/platform/notifications/notification-settings) in Harness.
 
-You can also view the complete pipeline YAML for fetching app details and syncing the GitOps application [here](/Sample-4/pipeline.yaml).
+You can also view the complete pipeline YAML for above sample [here](/Notifications-PR-Pipeline/pipeline.yaml).
 
 You have successfully set up a notification rule to receive alerts when your GitOps PR pipeline completes! 🚀
 
