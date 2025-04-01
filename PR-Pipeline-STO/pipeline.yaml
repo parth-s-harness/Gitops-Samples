@@ -1,5 +1,5 @@
 pipeline:
-  projectIdentifier: Krishika_CD_Samples
+  projectIdentifier: Gitops_Samples
   orgIdentifier: default
   tags: {}
   stages:
@@ -172,8 +172,8 @@ pipeline:
               action:
                 type: PipelineRollback
   notificationRules: []
-  identifier: Gitops_PR_Sample4_STO
-  name: Gitops PR Sample-7 - STO
+  identifier: Gitops_PR_Sample_STO
+  name: Gitops PR Sample-STO
   properties:
     ci:
       codebase:
