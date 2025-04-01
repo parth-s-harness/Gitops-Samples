@@ -1,0 +1,181 @@
+pipeline:
+  projectIdentifier: Krishika_CD_Samples
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Deploy
+        identifier: Stage1
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          gitOpsEnabled: true
+          service:
+            serviceRef: Service_Gitops
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          execution:
+            steps:
+              - step:
+                  type: GitOpsUpdateReleaseRepo
+                  name: Update Release Repo
+                  identifier: updateReleaseRepo
+                  timeout: 10m
+                  spec:
+                    variables:
+                      - name: replicaCount
+                        type: String
+                        value: <+input>
+                    prTitle: Update values.yaml
+              - step:
+                  type: HarnessApproval
+                  name: Approval_before_merging_pr
+                  identifier: HarnessApproval_1
+                  spec:
+                    approvalMessage: Please review the following information and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    isAutoRejectEnabled: false
+                    approvers:
+                      userGroups:
+                        - callback_test_user
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                    approverInputs: []
+                  timeout: 1d
+              - step:
+                  type: MergePR
+                  name: Merge PR
+                  identifier: mergePR
+                  spec:
+                    deleteSourceBranch: true
+                    variables: []
+                  timeout: 10m
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: PipelineRollback
+              - step:
+                  type: GitOpsSync
+                  name: GitOpsSync_Application
+                  identifier: GitOpsSync_Application
+                  spec:
+                    prune: false
+                    dryRun: false
+                    applyOnly: false
+                    forceApply: false
+                    applicationsList:
+                      - applicationName: gitops-sample-application
+                        agentId: gitopspragent
+                    retryStrategy: {}
+                    retry: false
+                    syncOptions:
+                      skipSchemaValidation: false
+                      autoCreateNamespace: false
+                      pruneResourcesAtLast: false
+                      applyOutOfSyncOnly: false
+                      replaceResources: false
+                      prunePropagationPolicy: foreground
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  type: RevertPR
+                  name: RevertPR_1
+                  identifier: RevertPR_1
+                  spec:
+                    commitId: <+pipeline.stages.Stage1.spec.execution.steps.mergePR.mergePROutcome.commitId>
+                    disableGitRestraint: true
+                    prTitle: Reverting PR due to security concerns
+                  timeout: 10m
+          environment:
+            environmentRef: Gitops_PR_Env
+            deployToAll: false
+            gitOpsClusters:
+              - identifier: incluster
+                agentIdentifier: gitopspragent
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        gitOpsEnabled: true
+    - stage:
+        name: security_test
+        identifier: security_test
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - parallel:
+                  - step:
+                      type: AquaTrivy
+                      name: AquaTrivy_1
+                      identifier: AquaTrivy_1
+                      spec:
+                        mode: orchestration
+                        config: default
+                        target:
+                          type: container
+                          detection: auto
+                        advanced:
+                          log:
+                            level: info
+                          fail_on_severity: high
+                        privileged: true
+                        image:
+                          type: docker_v2
+                          tag: latest
+                          name: krishi0408/python-helm-native-canary-blue
+                          domain: docker.io
+                        sbom:
+                          format: spdx-json
+                  - step:
+                      type: Gitleaks
+                      name: Gitleaks_1
+                      identifier: Gitleaks_1
+                      spec:
+                        mode: orchestration
+                        config: default
+                        target:
+                          type: repository
+                          detection: auto
+                        advanced:
+                          log:
+                            level: info
+                          fail_on_severity: high
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: PipelineRollback
+  notificationRules: []
+  identifier: Gitops_PR_Sample4_STO
+  name: Gitops PR Sample-7 - STO
+  properties:
+    ci:
+      codebase:
+        connectorRef: Gitops_PR_sample
+        build: <+input>
