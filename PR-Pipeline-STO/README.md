@@ -1,5 +1,5 @@
 ## Overview
-This PR pipeline extends the existing [PR pipeline](/Failure-Strategy-PR-Pipeline/README.md) by adding a **Security Testing Orchestration (STO) stage** to check for vulnerabilities:
+This PR pipeline extends the existing [ PR Pipeline with Failure Strategy](/Failure-Strategy-PR-Pipeline/README.md) by adding a **Security Testing Orchestration (STO) stage** to check for vulnerabilities:
    - Scans the deployed image for vulnerabilities.
    - Scans the Git repository for vulnerabilities.
    - If vulnerabilities are found, performs a rollback.
