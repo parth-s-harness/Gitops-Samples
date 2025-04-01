@@ -1,7 +1,7 @@
 pipeline:
   name: Gitops PR Sample-1
   identifier: Gitops_PR_Sample1
-  projectIdentifier: Krishika_CD_Samples
+  projectIdentifier: Gitops_Samples
   orgIdentifier: default
   tags: {}
   stages:

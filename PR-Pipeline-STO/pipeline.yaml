@@ -57,6 +57,12 @@ pipeline:
                     deleteSourceBranch: true
                     variables: []
                   timeout: 10m
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: PipelineRollback
               - step:
                   type: GitOpsSync
                   name: GitOpsSync_Application
@@ -79,7 +85,16 @@ pipeline:
                       replaceResources: false
                       prunePropagationPolicy: foreground
                   timeout: 10m
-            rollbackSteps: []
+            rollbackSteps:
+              - step:
+                  type: RevertPR
+                  name: RevertPR_1
+                  identifier: RevertPR_1
+                  spec:
+                    commitId: <+pipeline.stages.Stage1.spec.execution.steps.mergePR.mergePROutcome.commitId>
+                    disableGitRestraint: true
+                    prTitle: Reverting PR due to security concerns
+                  timeout: 10m
           environment:
             environmentRef: Gitops_PR_Env
             deployToAll: false
@@ -94,6 +109,73 @@ pipeline:
               action:
                 type: StageRollback
         gitOpsEnabled: true
-  identifier: Gitops_PR_Sample2
-  name: Gitops PR Sample-2
+    - stage:
+        name: security_test
+        identifier: security_test
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - parallel:
+                  - step:
+                      type: AquaTrivy
+                      name: AquaTrivy_1
+                      identifier: AquaTrivy_1
+                      spec:
+                        mode: orchestration
+                        config: default
+                        target:
+                          type: container
+                          detection: auto
+                        advanced:
+                          log:
+                            level: info
+                          fail_on_severity: high
+                        privileged: true
+                        image:
+                          type: docker_v2
+                          tag: latest
+                          name: krishi0408/python-helm-native-canary-blue
+                          domain: docker.io
+                        sbom:
+                          format: spdx-json
+                  - step:
+                      type: Gitleaks
+                      name: Gitleaks_1
+                      identifier: Gitleaks_1
+                      spec:
+                        mode: orchestration
+                        config: default
+                        target:
+                          type: repository
+                          detection: auto
+                        advanced:
+                          log:
+                            level: info
+                          fail_on_severity: high
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: PipelineRollback
   notificationRules: []
+  identifier: Gitops_PR_Sample_STO
+  name: Gitops PR Sample-STO
+  properties:
+    ci:
+      codebase:
+        connectorRef: Gitops_PR_sample
+        build: <+input>
