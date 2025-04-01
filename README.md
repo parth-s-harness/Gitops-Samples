@@ -41,6 +41,7 @@ This sample focuses on **adding notifications** to a GitOps PR pipeline. It ensu
 
 ### 5️⃣ [PR Pipeline with Security Testing Orchestration (STO) and Rollback](https://github.com/harness-community/Gitops-Samples/tree/main/PR-Pipeline-STO)
 This sample extends the PR Pipeline by integrating Security Testing Orchestration (STO) to scan for vulnerabilities before deploying changes.
+
 ✔ **Aqua Trivy** for scanning container images for security vulnerabilities
 
 ✔ **Gitleaks** for detecting secrets and vulnerabilities in the Git repository
