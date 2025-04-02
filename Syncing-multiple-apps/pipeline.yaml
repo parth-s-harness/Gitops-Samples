@@ -1,5 +1,5 @@
 pipeline:
-  projectIdentifier: Krishika_CD_Samples
+  projectIdentifier: Gitops_Samples
   orgIdentifier: default
   tags: {}
   stages:
