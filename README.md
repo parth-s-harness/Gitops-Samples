@@ -50,6 +50,15 @@ This sample extends the PR Pipeline by integrating Security Testing Orchestratio
 
 ✔ Ensures that only **secure deployments** make it to production
 
+### 6️⃣ [Syncing Multiple GitOps Applications](https://github.com/harness-community/Gitops-Samples/tree/main/Syncing-multiple-apps)
+This sample demonstrates how to **sync multiple GitOps applications** in Harness GitOps pipelines.
+
+✔ Manually select multiple applications for syncing in Harness pipelines.
+
+✔ Use a **matrix looping strategy** to dynamically sync multiple applications at runtime.
+
+✔ Improve efficiency by syncing multiple applications in a single pipeline execution.
+
 ---
 
 ## 🎯 Why Use These GitOps Samples?  
@@ -58,5 +67,6 @@ This sample extends the PR Pipeline by integrating Security Testing Orchestratio
 ✅ **Enhance control** over application updates with PR-based workflows  
 ✅ **Get notified** when deployments complete successfully
 ✅ **Strengthen security** by integrating security testing into the pipeline
+✅ **Increase efficiency** by syncing multiple applications dynamically 
 
 These examples provide a step-by-step guide to setting up Harness GitOps pipelines efficiently. Whether you're new to GitOps or looking to enhance your workflows, these samples will help streamline your deployments! 🚀
