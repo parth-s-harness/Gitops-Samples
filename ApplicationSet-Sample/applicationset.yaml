@@ -1,33 +1,34 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: pipeline-appset
+  name: multi-env-appset
 spec:
   generators:
-  - git:
-      repoURL: https://github.com/harness-community/Gitops-Samples.git
-      revision: HEAD
-      files:
-      - path: "ApplicationSet-Sample/**/config.json"
+    - git:
+        repoURL: https://github.com/krishi0408/Gitops-Samples.git
+        revision: main
+        files:
+          - path: ApplicationSet-Sample/cluster-config/*/config.json
   template:
     metadata:
-      name: '{{cluster_name}}'
-      labels:
-        harness.io/envRef: '{{environment}}'
-        harness.io/serviceRef: '{{harness_service}}'
+      name: guestbook-{{ environment }}  # Creates app like guestbook-Gitops_Dev_Env
     spec:
       project: default
       source:
-        repoURL: https://github.com/harness-community/Gitops-Samples.git
-        targetRevision: HEAD
-        path: '{{.path.path}}'
+        repoURL: https://github.com/krishi0408/Gitops-Samples.git
+        targetRevision: main
+        path: ApplicationSet-Sample/apps/guestbook  # Uses guestbook app manifests
+        helm:
+          values: |
+            cluster_name: in-cluster  # Same cluster for all
+            harness_service: service_gitops_pr  # Same Harness service for all
+            environment: {{ environment }}
       destination:
-        server: '{{server_address}}'
-        namespace: 'gitops-appset-{{environment}}'
+        server: "https://kubernetes.default.svc"  # Same cluster for all
+        namespace: '{{ environment }}'  # Namespace changes dynamically
       syncPolicy:
-        automated:
-          selfHeal: true
         syncOptions:
-        - PruneLast=true
-        - CreateNamespace=true
-        - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
+  syncPolicy:
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
