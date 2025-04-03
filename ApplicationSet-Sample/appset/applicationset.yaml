@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pipeline-appset
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/harness-community/Gitops-Samples.git
+      revision: HEAD
+      files:
+      - path: "ApplicationSet-Sample/**/config.json"
+  template:
+    metadata:
+      name: '{{cluster_name}}'
+      labels:
+        harness.io/envRef: '{{environment}}'
+        harness.io/serviceRef: '{{harness_service}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/harness-community/Gitops-Samples.git
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: '{{server_address}}'
+        namespace: 'gitops-appset-{{environment}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+        - PruneLast=true
+        - CreateNamespace=true
+        - ApplyOutOfSyncOnly=true
