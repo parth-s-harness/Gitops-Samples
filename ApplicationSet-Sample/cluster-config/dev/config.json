@@ -1,0 +1,6 @@
+{
+    "cluster_name" : "in-cluster",
+    "harness_service" : "service_gitops_pr",
+    "environment" : "Gitops_PR_Env",
+    "server_address" : "https://kubernetes.default.svc"
+}
