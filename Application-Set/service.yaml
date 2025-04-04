@@ -1,0 +1,53 @@
+service:
+  name: service_gitops_pr
+  identifier: service_gitops_pr
+  serviceDefinition:
+    type: Kubernetes
+    spec:
+      manifests:
+        - manifest:
+            identifier: config
+            type: ReleaseRepo
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Gitops_PR_sample
+                  gitFetchType: Branch
+                  paths:
+                    - ApplicationSet-Sample/cluster-config/<+serviceVariables.environment>/config.json
+                  branch: main
+        - manifest:
+            identifier: appset
+            type: DeploymentRepo
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Gitops_PR_sample
+                  gitFetchType: Branch
+                  paths:
+                    - ApplicationSet-Sample/appset/applicationset.yaml
+                  branch: main
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - identifier: artifact
+              type: Har
+              spec:
+                registryRef: dockerhub-test
+                type: docker
+                spec:
+                  imagePath: krishi0408/python-helm-native-canary-blue
+                  tag: "9"
+                  digest: ""
+      variables:
+        - name: environment
+          type: String
+          description: ""
+          required: false
+          value: <+pipeline.variables.environment_name>
+  gitOpsEnabled: true
+  orgIdentifier: default
+  projectIdentifier: Krishika_CD_Samples

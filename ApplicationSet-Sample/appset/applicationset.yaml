@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/krishi0408/Gitops-Samples.git
+      revision: main
+      files:
+      - path: ApplicationSet-Sample/cluster-config/*/config.json
+  template:
+    metadata:
+      name: 'guestbook-{{environment}'
+      labels:
+        harness.io/serviceRef: '{{harness_service}}'
+        harness.io/envRef: '{{environment}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/krishi0408/Gitops-Samples.git
+        targetRevision: main
+        path: ApplicationSet-Sample/apps/guestbook  
+        kustomize:
+          replicas: '{{replicas}}'
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: "argocd" 
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+        - PruneLast=true
+        - ApplyOutOfSyncOnly=true
+
+        
