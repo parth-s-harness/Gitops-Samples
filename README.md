@@ -59,6 +59,21 @@ This sample demonstrates how to **sync multiple GitOps applications** in Harness
 
 ✔ Improve efficiency by syncing multiple applications in a single pipeline execution.
 
+### 6️⃣ [ Deploying to a New Environment Using ApplicationSet in PR Pipeline](https://github.com/harness-community/Gitops-Samples/tree/main/Application-Set)
+
+This sample demonstrates how to deploy an application to a new environment using **ApplicationSet in a PR Pipeline**.
+
+✔ Uses ApplicationSet to dynamically generate applications for new environments.
+
+✔ Automatically detects environment configurations in the repo and provisions applications.
+
+✔ PR pipeline workflow includes creating a **config file, approval, merge, and syncing ApplicationSet**.
+
+✔ Git Generator fetches environment details from `config.json` for automation.
+
+✔ Streamlines deployments across multiple environments using a GitOps-driven workflow.
+
+
 ---
 
 ## 🎯 Why Use These GitOps Samples?  

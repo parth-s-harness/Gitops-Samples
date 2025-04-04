@@ -30,7 +30,7 @@ Git generator file for this sample: [here](/ApplicationSet-Sample/appset/applica
 
 ## Steps
 
-We are using the sample repository: **[GitOps-Samples: ApplicationSet-Sample]()**.
+We are using the sample repository: **[GitOps-Samples: ApplicationSet-Sample](https://github.com/harness-community/Gitops-Samples/tree/main/ApplicationSet-Sample)**.
 
 We will deploy the **Guestbook application** to a new environment by adding a new configuration file and using **Harness GitOps PR Pipeline**.
 
