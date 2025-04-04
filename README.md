@@ -39,6 +39,8 @@ This sample focuses on **adding notifications** to a GitOps PR pipeline. It ensu
 ✔ Selecting **pipeline events** to trigger notifications  
 ✔ Adding **recipients and user groups**  
 
+---
+
 ### 5️⃣ [PR Pipeline with Security Testing Orchestration (STO) and Rollback](https://github.com/harness-community/Gitops-Samples/tree/main/PR-Pipeline-STO)
 This sample extends the PR Pipeline by integrating Security Testing Orchestration (STO) to scan for vulnerabilities before deploying changes.
 
@@ -50,6 +52,8 @@ This sample extends the PR Pipeline by integrating Security Testing Orchestratio
 
 ✔ Ensures that only **secure deployments** make it to production
 
+---
+
 ### 6️⃣ [Syncing Multiple GitOps Applications](https://github.com/harness-community/Gitops-Samples/tree/main/Syncing-multiple-apps)
 This sample demonstrates how to **sync multiple GitOps applications** in Harness GitOps pipelines.
 
@@ -58,6 +62,8 @@ This sample demonstrates how to **sync multiple GitOps applications** in Harness
 ✔ Use a **matrix looping strategy** to dynamically sync multiple applications at runtime.
 
 ✔ Improve efficiency by syncing multiple applications in a single pipeline execution.
+
+---
 
 ### 6️⃣ [ Deploying to a New Environment Using ApplicationSet in PR Pipeline](https://github.com/harness-community/Gitops-Samples/tree/main/Application-Set)
 
@@ -73,15 +79,19 @@ This sample demonstrates how to deploy an application to a new environment using
 
 ✔ Streamlines deployments across multiple environments using a GitOps-driven workflow.
 
-
 ---
 
 ## 🎯 Why Use These GitOps Samples?  
 ✅ **Automate deployments** using GitOps principles  
-✅ **Improve visibility** into GitOps sync failures and rollback strategies  
+
+✅ **Improve visibility** into GitOps sync failures and rollback strategies
+
 ✅ **Enhance control** over application updates with PR-based workflows  
+
 ✅ **Get notified** when deployments complete successfully
+
 ✅ **Strengthen security** by integrating security testing into the pipeline
+
 ✅ **Increase efficiency** by syncing multiple applications dynamically 
 
 These examples provide a step-by-step guide to setting up Harness GitOps pipelines efficiently. Whether you're new to GitOps or looking to enhance your workflows, these samples will help streamline your deployments! 🚀
