@@ -1,0 +1,8 @@
+{
+  "a" : "a",
+  "cluster_name" : "cluster_name",
+  "environment" : "prod1",
+  "harness_service" : "service_gitops_pr",
+  "server_address" : "https://kubernetes.default.svc",
+  "replicas" : "3"
+}
