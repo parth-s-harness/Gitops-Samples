@@ -22,7 +22,7 @@ spec:
         targetRevision: main
         path: ApplicationSe-Sample/apps/guestbook  
         kustomize:
-          replicas: {{replicas}}
+          replicas: '{{replicas}}'
       destination:
         server: "https://kubernetes.default.svc"
         namespace: "qa-agent" 
