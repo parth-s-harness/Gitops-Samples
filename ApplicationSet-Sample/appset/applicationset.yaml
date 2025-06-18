@@ -20,9 +20,7 @@ spec:
       source:
         repoURL: https://github.com/krishi0408/Gitops-Samples.git
         targetRevision: main
-        path: ApplicationSe-Sample/apps/guestbook  
-        kustomize:
-          replicas: '{{replicas}}'
+        path: ApplicationSe-Sample/apps/guestbook 
       destination:
         server: "https://kubernetes.default.svc"
         namespace: "qa-agent" 
