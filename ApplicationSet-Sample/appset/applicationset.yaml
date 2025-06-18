@@ -8,7 +8,7 @@ spec:
       repoURL: https://github.com/krishi0408/Gitops-Samples.git
       revision: main
       files:
-      - path: ApplicationSet-Sample/cluster-config/*/config.json
+      - path: ApplicationSet-Sample/cluster-config/**/config.json
   template:
     metadata:
       name: 'guestbook-{{environment}'
