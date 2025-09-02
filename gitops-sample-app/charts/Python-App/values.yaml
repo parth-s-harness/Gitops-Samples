@@ -15,6 +15,7 @@ ingress:
 a: "a"
 replicaCount: 1
 environment: "<+pipeline.variables.environment_name>"
+ma: "jg"
 service:
   port: 80
   type: "ClusterIP"
