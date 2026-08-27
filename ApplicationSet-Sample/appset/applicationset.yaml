@@ -5,32 +5,32 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/krishi0408/Gitops-Samples.git
+      repoURL: https://github.com/parth-s-harness/Gitops-Samples.git
       revision: main
       files:
       - path: ApplicationSet-Sample/cluster-config/*/config.json
   template:
     metadata:
-      name: 'guestbook-{{environment}'
+      name: 'guestbook-{{environment}}'
       labels:
         harness.io/serviceRef: '{{harness_service}}'
         harness.io/envRef: '{{environment}}'
     spec:
       project: default
       source:
-        repoURL: https://github.com/krishi0408/Gitops-Samples.git
+        repoURL: https://github.com/parth-s-harness/Gitops-Samples.git
         targetRevision: main
-        path: ApplicationSet-Sample/apps/guestbook  
+        path: ApplicationSet-Sample/apps/guestbook
         kustomize:
-          replicas: '{{replicas}}'
+          replicas:
+            - name: kustomize-guestbook-ui
+              count: '{{replicas}}'
       destination:
         server: "https://kubernetes.default.svc"
-        namespace: "argocd" 
+        namespace: "argocd"
       syncPolicy:
         automated:
           selfHeal: true
         syncOptions:
         - PruneLast=true
         - ApplyOutOfSyncOnly=true
-
-        
