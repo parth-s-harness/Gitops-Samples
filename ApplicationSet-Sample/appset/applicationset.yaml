@@ -16,7 +16,7 @@ spec:
         harness.io/serviceRef: '{{harness_service}}'
         harness.io/envRef: '{{environment}}'
     spec:
-      project: default
+      project: "233fe9d5"
       source:
         repoURL: https://github.com/parth-s-harness/Gitops-Samples.git
         targetRevision: main
@@ -27,7 +27,7 @@ spec:
               count: '{{replicas}}'
       destination:
         server: "https://kubernetes.default.svc"
-        namespace: "argocd"
+        namespace: "guestbdevs1"
       syncPolicy:
         automated:
           selfHeal: true
