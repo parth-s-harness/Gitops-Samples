@@ -1,10 +1,15 @@
-# Case B experiment: rollouts DEFINED IN GIT (no ownerReferences).
-# Argo CD manages these directly -> they must appear in status.resources.
+# Case C experiment: rollouts DEFINED IN GIT *and* owned by the AppCentric CR.
+# Question: does the ownerReference exclude them from status.resources?
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: shop-rollout-1
   namespace: playtika-e2e
+  ownerReferences:
+    - apiVersion: playtika.example.com/v1alpha1
+      kind: AppCentric
+      name: shop-app
+      uid: 37b35d93-4c00-4f72-97c7-ecb5c5cab4de
 spec:
   replicas: 1
   selector:
@@ -30,6 +35,11 @@ kind: Rollout
 metadata:
   name: shop-rollout-2
   namespace: playtika-e2e
+  ownerReferences:
+    - apiVersion: playtika.example.com/v1alpha1
+      kind: AppCentric
+      name: shop-app
+      uid: 37b35d93-4c00-4f72-97c7-ecb5c5cab4de
 spec:
   replicas: 1
   selector:
