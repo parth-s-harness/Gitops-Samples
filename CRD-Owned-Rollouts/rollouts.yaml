@@ -1,0 +1,51 @@
+# Case B experiment: rollouts DEFINED IN GIT (no ownerReferences).
+# Argo CD manages these directly -> they must appear in status.resources.
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: shop-rollout-1
+  namespace: playtika-e2e
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-rollout-1
+  strategy:
+    canary:
+      steps:
+        - setWeight: 100
+  template:
+    metadata:
+      labels:
+        app: shop-rollout-1
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: shop-rollout-2
+  namespace: playtika-e2e
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-rollout-2
+  strategy:
+    canary:
+      steps:
+        - setWeight: 100
+  template:
+    metadata:
+      labels:
+        app: shop-rollout-2
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
