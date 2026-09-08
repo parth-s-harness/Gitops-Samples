@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: shop-config
+  name: shop-config-4
   namespace: playtika-e2e
 data:
   key: value1
@@ -9,7 +9,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: shop-config-2
+  name: shop-config-3
   namespace: playtika-e2e
 data:
   key: value2
